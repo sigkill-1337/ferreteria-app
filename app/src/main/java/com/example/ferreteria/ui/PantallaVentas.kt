@@ -255,7 +255,7 @@ private fun DialogoTicket(
                     ) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(18.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainer,
                             ),
@@ -292,7 +292,7 @@ private fun DialogoTicket(
 
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(18.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainer,
                             ),
@@ -328,7 +328,7 @@ private fun DialogoTicket(
 
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(18.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -371,7 +371,7 @@ private fun DialogoTicket(
                                 Text("Cancelar venta", color = MaterialTheme.colorScheme.error)
                             }
                             Spacer(Modifier.weight(1f))
-                            Button(onClick = alEditar, shape = RoundedCornerShape(14.dp)) {
+                            Button(onClick = alEditar, shape = RoundedCornerShape(8.dp)) {
                                 Text("Editar")
                             }
                         }
@@ -517,7 +517,7 @@ private fun FormularioVenta(
         if (enCarrito.isEmpty()) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
+                shape = RoundedCornerShape(10.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
             ) {
                 Row(
@@ -566,7 +566,7 @@ private fun FormularioVenta(
 
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(18.dp),
+            shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -608,7 +608,7 @@ private fun LineaCarrito(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),

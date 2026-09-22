@@ -269,7 +269,6 @@ private fun MenuMas(
     ) {
         TarjetaRegistro(
             titulo = "Empleados",
-            subtitulo = "Personal de la tienda",
             icono = Icons.Default.Groups,
             acento = TemaFerreteria.acentoDe(1),
             etiquetas = listOf(DatosEtiqueta(conteo(empleados, "registro", "registros"))),
@@ -277,7 +276,6 @@ private fun MenuMas(
         )
         TarjetaRegistro(
             titulo = "Categorías",
-            subtitulo = "Tipos de producto",
             icono = Icons.Default.Category,
             acento = TemaFerreteria.acentoDe(2),
             etiquetas = listOf(DatosEtiqueta(conteo(categorias, "registro", "registros"))),
@@ -285,7 +283,6 @@ private fun MenuMas(
         )
         TarjetaRegistro(
             titulo = "Proveedores",
-            subtitulo = "Quién surte el inventario",
             icono = Icons.Default.LocalShipping,
             acento = TemaFerreteria.acentoDe(3),
             etiquetas = listOf(DatosEtiqueta(conteo(proveedores, "registro", "registros"))),

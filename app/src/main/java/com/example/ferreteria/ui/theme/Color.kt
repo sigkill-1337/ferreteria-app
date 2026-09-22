@@ -3,122 +3,119 @@ package com.example.ferreteria.ui.theme
 import androidx.compose.ui.graphics.Color
 
 /**
- * Paleta violeta sobre negro azulado.
+ * Paleta tomada del tema oscuro de GitHub (Primer).
  *
- * El esquema oscuro es el que manda: los tonos claros se derivaron de él para
- * que la app se sienta la misma cuando el teléfono está en modo claro.
+ * El modo claro se derivó del tema claro de GitHub, no del violeta anterior: si
+ * solo se cambiara el oscuro, la app tendría dos identidades distintas según
+ * cómo esté configurado el teléfono, y cambiar de modo se sentiría como abrir
+ * otra aplicación.
+ *
+ * Lo que caracteriza a este tema no es solo el color: es el gris azulado muy
+ * oscuro del fondo, el escalón corto entre fondo y tarjeta, y el borde de 1px
+ * que separa cada superficie. Sin el borde, el mismo color se ve plano.
  */
 
-// ---------- Oscuro ----------
+// ---------- Oscuro: escala de grises de GitHub ----------
 
-val FondoOscuro = Color(0xFF100F18)
-val SuperficieOscura = Color(0xFF191828)
-val TarjetaOscura = Color(0xFF221F33)
-val TarjetaOscuraAlta = Color(0xFF2B2740)
-val TarjetaOscuraBaja = Color(0xFF15141F)
-val TarjetaOscuraMinima = Color(0xFF0B0A12)
+val GhNegro = Color(0xFF010409)      // canvas.inset
+val GhFondo = Color(0xFF0D1117)      // canvas.default
+val GhSuperficie = Color(0xFF161B22) // canvas.subtle, las tarjetas
+val GhElevado = Color(0xFF21262D)    // neutral 7
+val GhBorde = Color(0xFF30363D)      // border.default
+val GhBordeTenue = Color(0xFF21262D) // border.muted
+val GhGrisMedio = Color(0xFF6E7681)  // neutral 4
+val GhTextoTenue = Color(0xFF8B949E) // fg.muted
+val GhTexto = Color(0xFFE6EDF3)      // fg.default
 
-val LavandaOscuro = Color(0xFFB69DFF)
-val LavandaContenedorOscuro = Color(0xFF4A3A8C)
-val LavandaSobreContenedorOscuro = Color(0xFFE7DEFF)
-val LavandaSobrePrimarioOscuro = Color(0xFF2E1C63)
+// ---------- Oscuro: colores con significado ----------
 
-val RosaOscuro = Color(0xFFF0A6D8)
-val RosaContenedorOscuro = Color(0xFF6B3A5A)
-val RosaSobreContenedorOscuro = Color(0xFFFFD8EE)
-val RosaSobreSecundarioOscuro = Color(0xFF4E1F3F)
+val GhAzul = Color(0xFF58A6FF)            // accent.fg — enlaces y acciones
+val GhAzulFondo = Color(0xFF183051)       // accent.muted
+val GhAzulTexto = Color(0xFFCAE8FF)       // accent.subtle sobre fondo azul
+val GhAzulProfundo = Color(0xFF0C2D6B)
 
-val AzulOscuro = Color(0xFFA8C8FF)
-val AzulContenedorOscuro = Color(0xFF2A4A7C)
-val AzulSobreContenedorOscuro = Color(0xFFD4E3FF)
-val AzulSobreTerciarioOscuro = Color(0xFF10305E)
+val GhMorado = Color(0xFFA371F7)          // done.fg
+val GhMoradoFondo = Color(0xFF2D2144)
+val GhMoradoTexto = Color(0xFFE2D4FF)
+val GhMoradoProfundo = Color(0xFF2B1560)
 
-val TextoOscuro = Color(0xFFE6E1F0)
-val VarianteOscura = Color(0xFF322E45)
-val TextoVarianteOscuro = Color(0xFFC9C2DC)
-val BordeOscuro = Color(0xFF938FA6)
-val BordeVarianteOscuro = Color(0xFF47435C)
+val GhRosa = Color(0xFFDB61A2)            // sponsors.fg
+val GhRosaFondo = Color(0xFF3C1D30)
+val GhRosaTexto = Color(0xFFFFD3EC)
+val GhRosaProfundo = Color(0xFF51173C)
 
-val ErrorOscuro = Color(0xFFFFB4AB)
-val ErrorContenedorOscuro = Color(0xFF93000A)
-val ErrorSobreContenedorOscuro = Color(0xFFFFDAD6)
-val ErrorSobreOscuro = Color(0xFF690005)
+val GhVerde = Color(0xFF3FB950)           // success.fg
+val GhVerdeFondo = Color(0xFF12331B)
+val GhVerdeTexto = Color(0xFFAFF5B4)
 
-// ---------- Claro ----------
+val GhAmarillo = Color(0xFFD29922)        // attention.fg
+val GhAmarilloFondo = Color(0xFF342A0E)
+val GhAmarilloTexto = Color(0xFFF8E3A1)
 
-val FondoClaro = Color(0xFFFBF8FF)
-val SuperficieClara = Color(0xFFF2EDFA)
-val TarjetaClara = Color(0xFFECE6F6)
-val TarjetaClaraAlta = Color(0xFFE6E0F0)
-val TarjetaClaraBaja = Color(0xFFF6F2FC)
-val TarjetaClaraMinima = Color(0xFFFFFFFF)
+val GhRojo = Color(0xFFF85149)            // danger.fg
+val GhRojoFondo = Color(0xFF49141A)
+val GhRojoTexto = Color(0xFFFFDCD7)
+val GhRojoProfundo = Color(0xFF67060C)
 
-val VioletaClaro = Color(0xFF5B3FBF)
-val VioletaContenedorClaro = Color(0xFFE7DEFF)
-val VioletaSobreContenedorClaro = Color(0xFF1D0A4F)
+val GhNaranja = Color(0xFFDB6D28)         // severe.fg
 
-val MagentaClaro = Color(0xFF8B4B75)
-val MagentaContenedorClaro = Color(0xFFFFD8EE)
-val MagentaSobreContenedorClaro = Color(0xFF380726)
+// ---------- Claro: tema claro de GitHub ----------
 
-val AzulClaro = Color(0xFF3B5F9E)
-val AzulContenedorClaro = Color(0xFFD4E3FF)
-val AzulSobreContenedorClaro = Color(0xFF001B3C)
+val GhcBlanco = Color(0xFFFFFFFF)         // canvas.default
+val GhcSuperficie = Color(0xFFF6F8FA)     // canvas.subtle
+val GhcElevado = Color(0xFFEAEEF2)        // neutral 2
+val GhcBorde = Color(0xFFD1D9E0)          // border.default
+val GhcBordeTenue = Color(0xFFD8DEE4)     // border.muted
+val GhcGrisMedio = Color(0xFF818B98)
+val GhcTextoTenue = Color(0xFF59636E)     // fg.muted
+val GhcTexto = Color(0xFF1F2328)          // fg.default
 
-val TextoClaro = Color(0xFF1B1B22)
-val VarianteClara = Color(0xFFE6E0F0)
-val TextoVarianteClaro = Color(0xFF48455A)
-val BordeClaro = Color(0xFF79758B)
-val BordeVarianteClaro = Color(0xFFCAC4DA)
+val GhcAzul = Color(0xFF0969DA)           // accent.fg
+val GhcAzulFondo = Color(0xFFDDF4FF)      // accent.subtle
+val GhcAzulTexto = Color(0xFF0A3069)
 
-val ErrorClaro = Color(0xFFBA1A1A)
-val ErrorContenedorClaro = Color(0xFFFFDAD6)
-val ErrorSobreContenedorClaro = Color(0xFF410002)
+val GhcMorado = Color(0xFF8250DF)         // done.fg
+val GhcMoradoFondo = Color(0xFFFBEFFF)
+val GhcMoradoTexto = Color(0xFF3C1E70)
 
-val Blanco = Color(0xFFFFFFFF)
+val GhcRosa = Color(0xFFBF3989)           // sponsors.fg
+val GhcRosaFondo = Color(0xFFFFEFF7)
+val GhcRosaTexto = Color(0xFF6B1F57)
 
-// ---------- Colores de estado ----------
-// Material 3 no trae "éxito" ni "advertencia", pero el inventario los necesita:
-// stock agotado, stock bajo y stock sano tienen que distinguirse de un vistazo.
+val GhcVerde = Color(0xFF1A7F37)          // success.fg
+val GhcVerdeFondo = Color(0xFFDAFBE1)
+val GhcVerdeTexto = Color(0xFF003D16)
 
-val ExitoOscuro = Color(0xFF7ADFA8)
-val ExitoContenedorOscuro = Color(0xFF1E4634)
-val ExitoSobreContenedorOscuro = Color(0xFFB8F2CE)
+val GhcAmarillo = Color(0xFF9A6700)       // attention.fg
+val GhcAmarilloFondo = Color(0xFFFFF8C5)
+val GhcAmarilloTexto = Color(0xFF4D2D00)
 
-val AlertaOscuro = Color(0xFFFFD08A)
-val AlertaContenedorOscuro = Color(0xFF553B12)
-val AlertaSobreContenedorOscuro = Color(0xFFFFE5BF)
+val GhcRojo = Color(0xFFD1242F)           // danger.fg
+val GhcRojoFondo = Color(0xFFFFEBE9)
+val GhcRojoTexto = Color(0xFF82071E)
 
-val ExitoClaro = Color(0xFF1F6B45)
-val ExitoContenedorClaro = Color(0xFFBFEFD4)
-val ExitoSobreContenedorClaro = Color(0xFF04220F)
+val GhcNaranja = Color(0xFFBC4C00)        // severe.fg
 
-val AlertaClaro = Color(0xFF8A5A00)
-val AlertaContenedorClaro = Color(0xFFFFE0B0)
-val AlertaSobreContenedorClaro = Color(0xFF2C1A00)
-
-// ---------- Acentos de categoria ----------
+// ---------- Acentos de categoría ----------
 //
-// Cada categoria de producto recibe un color estable, que se pinta como franja
-// vertical en el borde izquierdo de su tarjeta. La franja hace dos cosas: le da
-// identidad a la lista sin recurrir al circulo con iniciales (que es lenguaje de
-// agenda de contactos, no de inventario) y deja agrupar visualmente de un
-// vistazo que renglones son de la misma familia.
+// Son los colores con los que GitHub pinta sus etiquetas. Cada categoría de
+// producto recibe uno de forma estable y se dibuja como franja en el borde
+// izquierdo de la tarjeta.
 
 val AcentosOscuro = listOf(
-    Color(0xFFB69DFF), // lavanda
-    Color(0xFFF0A6D8), // rosa
-    Color(0xFF7ADFA8), // verde
-    Color(0xFFFFD08A), // ambar
-    Color(0xFF8FD0FF), // azul
-    Color(0xFFFF9E80), // coral
+    GhAzul,
+    GhMorado,
+    GhVerde,
+    GhAmarillo,
+    GhRosa,
+    GhNaranja,
 )
 
 val AcentosClaro = listOf(
-    Color(0xFF5B3FBF), // violeta
-    Color(0xFFA8447E), // magenta
-    Color(0xFF1F6B45), // verde
-    Color(0xFF9A6100), // ambar
-    Color(0xFF2F5EA8), // azul
-    Color(0xFFB04A2A), // coral
+    GhcAzul,
+    GhcMorado,
+    GhcVerde,
+    GhcAmarillo,
+    GhcRosa,
+    GhcNaranja,
 )

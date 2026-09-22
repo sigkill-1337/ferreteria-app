@@ -276,7 +276,7 @@ fun CuadroIcono(
         modifier = modifier.size(tamano.dp),
         color = color.copy(alpha = 0.16f),
         contentColor = color,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(8.dp),
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(icono, contentDescription = null, modifier = Modifier.size((tamano * 0.5).dp))
@@ -374,10 +374,13 @@ fun TarjetaConFranja(
         modifier = modifier.fillMaxWidth(),
         onClick = alTocar ?: {},
         enabled = alTocar != null,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
+        // El borde de 1px separa la tarjeta del fondo. Con este tema, fondo y
+        // superficie están a un paso de distancia; sin borde se funden.
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         // La franja se pinta con drawBehind y no con un Box de altura intrínseca:
         // drawBehind usa el tamaño ya medido, así que funciona con cualquier
@@ -523,9 +526,10 @@ fun TarjetaResumen(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(10.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)),
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -579,7 +583,7 @@ fun CampoBusqueda(
             }
         },
         singleLine = true,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
     )
 }
@@ -663,7 +667,7 @@ fun EstadoVacio(
     ) {
         Surface(
             modifier = Modifier.size(64.dp),
-            shape = RoundedCornerShape(18.dp),
+            shape = RoundedCornerShape(10.dp),
             color = acento.copy(alpha = 0.14f),
             contentColor = acento,
         ) {
@@ -684,7 +688,7 @@ fun EstadoVacio(
 
         if (alReintentar != null) {
             Spacer(Modifier.height(20.dp))
-            FilledTonalButton(onClick = alReintentar, shape = RoundedCornerShape(12.dp)) {
+            FilledTonalButton(onClick = alReintentar, shape = RoundedCornerShape(8.dp)) {
                 Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text("Reintentar")
@@ -715,7 +719,7 @@ fun CampoFormulario(
         label = { Text(if (obligatorio) "$etiqueta *" else etiqueta) },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         leadingIcon = icono?.let {
             { Icon(it, contentDescription = null, modifier = Modifier.size(20.dp)) }
         },
@@ -758,7 +762,7 @@ fun <T> SelectorOpcion(
             Surface(
                 onClick = { abierto = true },
                 enabled = hayOpciones,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 border = BorderStroke(1.dp, borde),
                 modifier = Modifier.fillMaxWidth(),
@@ -881,7 +885,7 @@ fun DialogoFormulario(
                             Button(
                                 onClick = alGuardar,
                                 enabled = puedeGuardar && !guardando,
-                                shape = RoundedCornerShape(12.dp),
+                                shape = RoundedCornerShape(8.dp),
                             ) {
                                 Text(textoGuardar)
                             }
@@ -900,7 +904,7 @@ fun BannerError(mensaje: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.errorContainer)
             .drawBehind {
                 drawRect(color = franja, size = Size(anchoFranja.toPx(), size.height))
@@ -935,7 +939,7 @@ fun DialogoConfirmar(
         },
         title = { Text(titulo, style = MaterialTheme.typography.titleLarge) },
         text = { Text(mensaje) },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(12.dp),
         confirmButton = {
             TextButton(onClick = alConfirmar) {
                 Text(textoConfirmar, color = MaterialTheme.colorScheme.error)

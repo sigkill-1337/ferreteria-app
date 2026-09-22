@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- canvas.default del tema oscuro de GitHub -->
+    <color name="fondo_ventana">#0D1117</color>
+</resources>

@@ -288,7 +288,7 @@ private fun FilaProductoTop(lugar: Int, producto: ProductoTop) {
 private fun FilaCanal(canal: VentasPorCanal, porcentajeMayor: Double) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
@@ -396,7 +396,7 @@ private fun FilaSeguimiento(registro: SeguimientoCliente) {
 private fun MensajeSinDatos(texto: String) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
     ) {
         Text(

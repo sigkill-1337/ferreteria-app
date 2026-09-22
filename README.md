@@ -266,11 +266,28 @@ local y un `BackHandler`.
 **Los iconos se declaran aparte** (`material-icons-extended`). En esta versión de
 Compose ya no llegan de forma transitiva con `material3`.
 
-**La paleta es fija, sin `dynamicColor`**, pero sigue el modo claro/oscuro del
-sistema. Los colores cargan significado —verde "stock sano", ámbar "quedan
-pocos", rojo "agotado"— y con colores dinámicos cambiarían de teléfono en
-teléfono. Como Material 3 no define "éxito" ni "advertencia", esos pares viven en
-`ColoresEstado` y se reparten con un `CompositionLocal`.
+**La paleta viene del tema de GitHub (Primer)**, y sigue el modo claro/oscuro
+del sistema. El oscuro usa la escala de grises de GitHub —`#0D1117` de fondo,
+`#161B22` para las tarjetas, `#30363D` de borde— con el azul `#58A6FF` como
+color de acción. El claro se derivó del tema claro de GitHub, no se dejó el
+violeta anterior: con dos paletas sin relación, cambiar el modo del teléfono se
+sentiría como abrir otra aplicación.
+
+Lo que hace reconocible a este tema no es solo el color. Es el escalón corto
+entre fondo y superficie, y el **borde de 1px** en cada tarjeta. Con superficies
+tan próximas, sin ese borde todo se ve plano. Las esquinas también son más
+cerradas que el valor por omisión de Material: 8dp en tarjetas y campos, 6dp en
+etiquetas.
+
+**Sin `dynamicColor`**, a propósito: los colores cargan significado —verde
+"stock sano", ámbar "quedan pocos", rojo "agotado"— y con colores dinámicos
+cambiarían de teléfono en teléfono. Como Material 3 no define "éxito" ni
+"advertencia", esos pares viven en `ColoresEstado` y se reparten con un
+`CompositionLocal`.
+
+**El fondo de ventana está declarado en XML, con variante `values-night`.** Es
+el color que pinta Android antes de que Compose dibuje; si se deja el blanco por
+omisión, abrir la app en modo oscuro produce un destello.
 
 **Las etiquetas van en `FlowRow`, no en `Row`.** Un `Row` reparte el ancho entre
 sus hijos y, cuando no caben, comprime el texto hasta partirlo letra por letra en
