@@ -96,3 +96,29 @@ val ExitoSobreContenedorClaro = Color(0xFF04220F)
 val AlertaClaro = Color(0xFF8A5A00)
 val AlertaContenedorClaro = Color(0xFFFFE0B0)
 val AlertaSobreContenedorClaro = Color(0xFF2C1A00)
+
+// ---------- Acentos de categoria ----------
+//
+// Cada categoria de producto recibe un color estable, que se pinta como franja
+// vertical en el borde izquierdo de su tarjeta. La franja hace dos cosas: le da
+// identidad a la lista sin recurrir al circulo con iniciales (que es lenguaje de
+// agenda de contactos, no de inventario) y deja agrupar visualmente de un
+// vistazo que renglones son de la misma familia.
+
+val AcentosOscuro = listOf(
+    Color(0xFFB69DFF), // lavanda
+    Color(0xFFF0A6D8), // rosa
+    Color(0xFF7ADFA8), // verde
+    Color(0xFFFFD08A), // ambar
+    Color(0xFF8FD0FF), // azul
+    Color(0xFFFF9E80), // coral
+)
+
+val AcentosClaro = listOf(
+    Color(0xFF5B3FBF), // violeta
+    Color(0xFFA8447E), // magenta
+    Color(0xFF1F6B45), // verde
+    Color(0xFF9A6100), // ambar
+    Color(0xFF2F5EA8), // azul
+    Color(0xFFB04A2A), // coral
+)

@@ -40,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -49,6 +50,7 @@ import com.example.ferreteria.data.ProductoTop
 import com.example.ferreteria.data.SeguimientoCliente
 import com.example.ferreteria.data.VentaDelDia
 import com.example.ferreteria.data.VentasPorCanal
+import com.example.ferreteria.ui.theme.TemaFerreteria
 
 /**
  * Reportes: es la parte de la app que enseña lo que vive en la base de datos y
@@ -227,15 +229,14 @@ private fun ListaReporte(estado: EstadoReportes) {
 @Composable
 private fun FilaVentaDelDia(venta: VentaDelDia) {
     TarjetaRegistro(
-        titulo = "Venta #${venta.id_venta}",
-        subtitulo = venta.cliente,
+        titulo = venta.cliente,
+        acento = colorDeCanal(venta.canal),
+        clave = folioDe(venta.id_venta) + "  ·  " + venta.hora,
         lineas = listOf("Atendió ${venta.empleado}"),
         etiquetas = listOf(
-            DatosEtiqueta(venta.hora, Tono.NEUTRO, Icons.Default.CalendarMonth),
             etiquetaCanal(venta.canal),
-            DatosEtiqueta(conteo(venta.piezas, "pieza", "piezas"), Tono.ACENTO),
+            DatosEtiqueta(conteo(venta.piezas, "pieza", "piezas"), Tono.NEUTRO),
         ),
-        avatar = DatosAvatar(icono = Icons.Default.PointOfSale, tono = Tono.PRIMARIO),
         valor = venta.total.comoPesos(),
     )
 }
@@ -252,7 +253,12 @@ private fun FilaClienteVigente(cliente: ClienteVigente) {
             DatosEtiqueta(conteo(cliente.pedidos, "pedido", "pedidos"), Tono.ACENTO),
             DatosEtiqueta("hace ${cliente.dias_desde_ultima} d", Tono.NEUTRO),
         ),
-        avatar = DatosAvatar(texto = iniciales(cliente.cliente), tono = Tono.PRIMARIO),
+        avatar = DatosAvatar(
+            texto = iniciales(cliente.cliente),
+            color = TemaFerreteria.acentoDe(cliente.id_cliente),
+        ),
+        acento = TemaFerreteria.acentoDe(cliente.id_cliente),
+        clave = claveDe(cliente.id_cliente),
         valor = cliente.monto_total.comoPesos(),
         valorSecundario = "en el trimestre",
     )
@@ -262,6 +268,8 @@ private fun FilaClienteVigente(cliente: ClienteVigente) {
 private fun FilaProductoTop(lugar: Int, producto: ProductoTop) {
     TarjetaRegistro(
         titulo = producto.nombre_producto,
+        acento = TemaFerreteria.acentoDe(producto.id_producto),
+        clave = "LUGAR $lugar  ·  " + claveDe(producto.id_producto),
         subtitulo = producto.nombre_categoria,
         lineas = listOf(
             "Aparece en ${conteo(producto.aparece_en_ventas, "venta", "ventas")}",
@@ -271,10 +279,6 @@ private fun FilaProductoTop(lugar: Int, producto: ProductoTop) {
                 conteo(producto.piezas_vendidas, "pieza vendida", "piezas vendidas"),
                 if (lugar == 1) Tono.EXITO else Tono.NEUTRO,
             ),
-        ),
-        avatar = DatosAvatar(
-            texto = "#$lugar",
-            tono = if (lugar == 1) Tono.EXITO else Tono.ACENTO,
         ),
         valor = producto.importe_vendido.comoPesos(),
     )
@@ -356,6 +360,11 @@ private fun FilaDirectorio(persona: PersonaDirectorio) {
             texto = iniciales(persona.nombre),
             tono = if (esEmpleado) Tono.EXITO else Tono.PRIMARIO,
         ),
+        acento = if (esEmpleado) {
+            TemaFerreteria.estado.exito
+        } else {
+            MaterialTheme.colorScheme.primary
+        },
     )
 }
 
@@ -363,6 +372,7 @@ private fun FilaDirectorio(persona: PersonaDirectorio) {
 private fun FilaSeguimiento(registro: SeguimientoCliente) {
     TarjetaRegistro(
         titulo = registro.nombre_cliente,
+        clave = registro.id_venta?.let { folioDe(it) } ?: "SIN VENTA",
         subtitulo = registro.fecha_legible,
         lineas = listOfNotNull(
             registro.id_venta?.let { "Venta #$it" }
@@ -376,7 +386,8 @@ private fun FilaSeguimiento(registro: SeguimientoCliente) {
                 DatosEtiqueta("Pendiente", Tono.ALERTA)
             },
         ),
-        avatar = DatosAvatar(icono = Icons.Default.NotificationsActive, tono = Tono.ALERTA),
+        icono = Icons.Default.NotificationsActive,
+        acento = colorDeCanal(registro.canal),
         valor = registro.total_compra.comoPesos(),
     )
 }
@@ -436,6 +447,14 @@ fun etiquetaCanal(canal: String): DatosEtiqueta = DatosEtiqueta(
     },
     icono = iconoDeCanal(canal),
 )
+
+/** Color de la franja según el canal por el que entró la venta. */
+@Composable
+fun colorDeCanal(canal: String): Color = when (canal.uppercase()) {
+    "APP" -> MaterialTheme.colorScheme.primary
+    "WEB" -> MaterialTheme.colorScheme.tertiary
+    else -> MaterialTheme.colorScheme.outline
+}
 
 fun nombreDeCanal(canal: String): String = when (canal.uppercase()) {
     "APP" -> "App móvil"

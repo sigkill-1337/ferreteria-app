@@ -92,6 +92,8 @@ data class ColoresEstado(
     val alerta: Color,
     val alertaContenedor: Color,
     val sobreAlertaContenedor: Color,
+    /** Acentos de categoría, para las franjas de las tarjetas. */
+    val acentos: List<Color>,
 )
 
 private val EstadoOscuro = ColoresEstado(
@@ -101,6 +103,7 @@ private val EstadoOscuro = ColoresEstado(
     alerta = AlertaOscuro,
     alertaContenedor = AlertaContenedorOscuro,
     sobreAlertaContenedor = AlertaSobreContenedorOscuro,
+    acentos = AcentosOscuro,
 )
 
 private val EstadoClaro = ColoresEstado(
@@ -110,6 +113,7 @@ private val EstadoClaro = ColoresEstado(
     alerta = AlertaClaro,
     alertaContenedor = AlertaContenedorClaro,
     sobreAlertaContenedor = AlertaSobreContenedorClaro,
+    acentos = AcentosClaro,
 )
 
 private val LocalColoresEstado = staticCompositionLocalOf { EstadoOscuro }
@@ -120,6 +124,14 @@ object TemaFerreteria {
         @Composable
         @ReadOnlyComposable
         get() = LocalColoresEstado.current
+
+    /** Color estable para un identificador: la misma categoría siempre igual. */
+    @Composable
+    @ReadOnlyComposable
+    fun acentoDe(id: Int): Color {
+        val acentos = LocalColoresEstado.current.acentos
+        return acentos[((id - 1) % acentos.size + acentos.size) % acentos.size]
+    }
 }
 
 @Composable

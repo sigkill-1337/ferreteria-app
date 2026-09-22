@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.ferreteria.data.Empleado
 import com.example.ferreteria.data.EmpleadoRequest
+import com.example.ferreteria.ui.theme.TemaFerreteria
 
 @Composable
 fun PantallaEmpleados(
@@ -83,20 +84,24 @@ fun PantallaEmpleados(
                 },
                 alReintentar = vm::cargar,
             ) { empleado ->
+                val acento = TemaFerreteria.acentoDe(empleado.id_empleado)
+
                 TarjetaRegistro(
                     titulo = nombreCompleto(
                         empleado.nombre_empleado,
                         empleado.ap_paterno_empleado,
                         empleado.ap_materno_empleado,
                     ),
+                    acento = acento,
+                    clave = claveDe(empleado.id_empleado),
                     lineas = listOf(empleado.email_empleado),
                     etiquetas = listOf(
-                        DatosEtiqueta(empleado.puesto, Tono.ACENTO, Icons.Default.WorkOutline),
+                        DatosEtiqueta(empleado.puesto, Tono.NEUTRO, Icons.Default.WorkOutline),
                         DatosEtiqueta(empleado.telefono_empleado, Tono.NEUTRO, Icons.Default.PhoneAndroid),
                     ),
                     avatar = DatosAvatar(
                         texto = iniciales(empleado.nombre_empleado, empleado.ap_paterno_empleado),
-                        tono = Tono.EXITO,
+                        color = acento,
                     ),
                     valor = empleado.sueldo.comoPesos(),
                     valorSecundario = "sueldo",

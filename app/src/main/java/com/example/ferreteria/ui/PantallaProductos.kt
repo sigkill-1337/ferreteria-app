@@ -1,9 +1,14 @@
 package com.example.ferreteria.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachMoney
@@ -14,6 +19,7 @@ import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material.icons.filled.Warehouse
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,17 +32,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.ferreteria.data.Categoria
 import com.example.ferreteria.data.Producto
 import com.example.ferreteria.data.ProductoRequest
 import com.example.ferreteria.data.Proveedor
+import com.example.ferreteria.ui.theme.TemaFerreteria
 import java.math.BigDecimal
 
 /**
- * Inventario: lista de productos con alta, edición y baja.
- * Las categorías y proveedores llegan de fuera porque el formulario los
- * necesita como desplegables y ya están cargados en las otras pestañas.
+ * Inventario.
+ *
+ * Nada de círculos con iniciales aquí: un producto no es un contacto. Cada
+ * renglón se identifica por su clave en monoespaciado y por la franja de color
+ * de su categoría, y lleva una barra de existencias para comparar niveles de un
+ * vistazo sin leer los números.
  */
 @Composable
 fun PantallaProductos(
@@ -66,6 +77,12 @@ fun PantallaProductos(
                     it.descripcion_producto.orEmpty().lowercase().contains(texto)
             }
         }
+    }
+
+    // La barra de cada producto se mide contra el de mayor existencia, no contra
+    // un tope inventado: así las barras comparan entre sí.
+    val stockMayor = remember(estado.items) {
+        estado.items.maxOfOrNull { it.stock } ?: 0
     }
 
     val valorInventario = remember(estado.items) {
@@ -112,20 +129,9 @@ fun PantallaProductos(
                     null
                 },
             ) { producto ->
-                TarjetaRegistro(
-                    titulo = producto.nombre_producto,
-                    subtitulo = producto.descripcion_producto?.takeIf { it.isNotBlank() },
-                    lineas = listOf("Compra ${producto.precio_compra.comoPesos()} · ${producto.proveedor}"),
-                    etiquetas = listOf(
-                        DatosEtiqueta(producto.nombre_categoria, Tono.ACENTO, Icons.Default.Category),
-                        etiquetaStock(producto.stock),
-                    ),
-                    avatar = DatosAvatar(
-                        texto = iniciales(producto.nombre_producto),
-                        tono = tonoPorCategoria(producto.id_categoria),
-                    ),
-                    valor = producto.precio_venta.comoPesos(),
-                    valorSecundario = margenDe(producto),
+                TarjetaProducto(
+                    producto = producto,
+                    stockMayor = stockMayor,
                     alEditar = { editando = producto },
                     alBorrar = { porBorrar = producto },
                 )
@@ -177,17 +183,105 @@ fun PantallaProductos(
     }
 }
 
-/** Stock agotado, bajo o sano — el color hace el trabajo de leerlo. */
-private fun etiquetaStock(stock: Int): DatosEtiqueta = when {
-    stock == 0 -> DatosEtiqueta("Agotado", Tono.ERROR)
-    stock <= 5 -> DatosEtiqueta("Quedan $stock", Tono.ALERTA)
-    else -> DatosEtiqueta("Stock $stock", Tono.EXITO)
+/** Renglón de inventario: clave, nombre, barra de existencias y precio. */
+@Composable
+private fun TarjetaProducto(
+    producto: Producto,
+    stockMayor: Int,
+    alEditar: () -> Unit,
+    alBorrar: () -> Unit,
+) {
+    val acento = TemaFerreteria.acentoDe(producto.id_categoria)
+    val tonoStock = tonoDeStock(producto.stock)
+    val colorStock = colorDeTono(tonoStock)
+
+    TarjetaConFranja(acento = acento) {
+        Row(modifier = Modifier.padding(start = 12.dp, top = 12.dp, end = 6.dp, bottom = 12.dp)) {
+            Column(modifier = Modifier.weight(1f)) {
+                Clave(claveDe(producto.id_producto) + "  ·  " + producto.proveedor)
+                Spacer(Modifier.height(3.dp))
+
+                Text(
+                    producto.nombre_producto,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                producto.descripcion_producto?.takeIf { it.isNotBlank() }?.let { descripcion ->
+                    Text(
+                        descripcion,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                Spacer(Modifier.height(10.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    BarraNivel(
+                        valor = producto.stock,
+                        maximo = stockMayor,
+                        color = colorStock,
+                        modifier = Modifier.weight(1f),
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    Text(
+                        textoDeStock(producto.stock),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = colorStock,
+                        maxLines = 1,
+                    )
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Etiqueta(
+                        DatosEtiqueta(
+                            producto.nombre_categoria,
+                            Tono.NEUTRO,
+                            Icons.Default.Category,
+                        )
+                    )
+                }
+            }
+
+            Column(
+                horizontalAlignment = Alignment.End,
+                modifier = Modifier.padding(start = 10.dp),
+            ) {
+                Importe(producto.precio_venta.comoPesos())
+                margenDe(producto)?.let { margen ->
+                    Text(
+                        margen,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                    )
+                }
+                Spacer(Modifier.height(6.dp))
+                AccionesFila(alEditar = alEditar, alBorrar = alBorrar)
+            }
+        }
+    }
 }
 
-/** Color estable por categoría: la misma categoría siempre se ve igual. */
-private fun tonoPorCategoria(idCategoria: Int): Tono {
-    val tonos = listOf(Tono.PRIMARIO, Tono.ACENTO, Tono.EXITO, Tono.ALERTA)
-    return tonos[(idCategoria - 1).mod(tonos.size)]
+/** "#001" — clave de artículo con ceros a la izquierda. */
+fun claveDe(id: Int): String = "#" + id.toString().padStart(3, '0')
+
+private fun tonoDeStock(stock: Int): Tono = when {
+    stock == 0 -> Tono.ERROR
+    stock <= 5 -> Tono.ALERTA
+    else -> Tono.EXITO
+}
+
+private fun textoDeStock(stock: Int): String = when (stock) {
+    0 -> "AGOTADO"
+    1 -> "1 pza"
+    else -> "$stock pzas"
 }
 
 /** Utilidad por pieza, para tener a la vista si el precio de venta tiene sentido. */

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.ferreteria.data.Cliente
 import com.example.ferreteria.data.ClienteRequest
+import com.example.ferreteria.ui.theme.TemaFerreteria
 
 @Composable
 fun PantallaClientes(
@@ -81,19 +82,24 @@ fun PantallaClientes(
                 },
                 alReintentar = vm::cargar,
             ) { cliente ->
+                val acento = TemaFerreteria.acentoDe(cliente.id_cliente)
+
                 TarjetaRegistro(
+                    // El círculo con iniciales sí corresponde aquí: son personas.
                     titulo = nombreCompleto(
                         cliente.nombre_cliente,
                         cliente.ap_paterno_cliente,
                         cliente.ap_materno_cliente,
                     ),
+                    acento = acento,
+                    clave = claveDe(cliente.id_cliente),
                     lineas = listOf(cliente.email_cliente),
                     etiquetas = listOf(
                         DatosEtiqueta(cliente.telefono_cliente, Tono.NEUTRO, Icons.Default.PhoneAndroid),
                     ),
                     avatar = DatosAvatar(
                         texto = iniciales(cliente.nombre_cliente, cliente.ap_paterno_cliente),
-                        tono = Tono.PRIMARIO,
+                        color = acento,
                     ),
                     alEditar = { editando = cliente },
                     alBorrar = { porBorrar = cliente },

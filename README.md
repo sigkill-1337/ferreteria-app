@@ -21,9 +21,10 @@ consultas agrupadas de la base de datos.
 3. [Flujo de datos](#flujo-de-datos)
 4. [Archivos clave](#archivos-clave)
 5. [Pantallas](#pantallas)
-6. [Decisiones técnicas](#decisiones-técnicas)
-7. [Dependencias](#dependencias)
-8. [Estado](#estado)
+6. [Lenguaje visual](#lenguaje-visual)
+7. [Decisiones técnicas](#decisiones-técnicas)
+8. [Dependencias](#dependencias)
+9. [Estado](#estado)
 
 ---
 
@@ -165,10 +166,10 @@ genérico.
 | `ViewModels.kt` | `CrudViewModel<T, R>` genérico (cargar, guardar, eliminar, errores) y los cinco concretos: productos, clientes, empleados, categorías, proveedores. |
 | `VentasViewModel.kt` | Ventas. No encaja en el CRUD genérico porque el POST no manda la misma forma que devuelve el GET. |
 | `ReportesViewModel.kt` | Los seis reportes y sus parámetros (fecha, año). |
-| `Comunes.kt` | Biblioteca de UI: `TarjetaRegistro`, `Etiqueta`, `Avatar`, `SelectorOpcion`, `DialogoFormulario`, `EstadoVacio`, `CampoBusqueda`. Todo lo que se repite. |
+| `Comunes.kt` | Biblioteca de UI: `TarjetaConFranja`, `TarjetaRegistro`, `Clave`, `Importe`, `BarraNivel`, `CuadroIcono`, `Etiqueta`, `Avatar`, `SelectorOpcion`, `DialogoFormulario`, `EstadoVacio`. Todo lo que se repite. |
 | `Formato.kt` | Pesos con `BigDecimal`, fechas legibles, plurales. |
 | `Pantalla*.kt` | Una por sección. Cada una tiene su lista y su formulario. |
-| `theme/` | Paleta violeta (claro y oscuro) y los colores de estado que Material 3 no define. |
+| `theme/` | Paleta violeta (claro y oscuro), acentos de categoría, colores de estado que Material 3 no define, y la tipografía afinada. |
 
 ### Configuración
 
@@ -204,6 +205,44 @@ que esa misma venta ya tenía apartado, porque el servidor repone el detalle
 anterior antes de validar el nuevo.
 
 ---
+
+## Lenguaje visual
+
+La primera versión se veía genérica porque usaba el mismo renglón de Material
+para todo: círculo con iniciales, título, subtítulo, chips. Ese patrón viene de
+las apps de contactos, y aplicado a un martillo hacía que el inventario se leyera
+como una agenda. El rediseño parte de dos reglas.
+
+**1. El círculo con iniciales es solo para personas.** Clientes y empleados lo
+llevan, porque un nombre propio sí se abrevia así. Los productos, categorías y
+proveedores no: se identifican por su clave y, cuando hace falta un símbolo,
+llevan un cuadro con icono (`CuadroIcono`), no un círculo.
+
+**2. Cada tarjeta lleva una franja de acento a la izquierda.** Da ritmo a las
+listas y permite agrupar de un vistazo sin leer. El color es estable por
+identificador (`TemaFerreteria.acentoDe`), así que una categoría siempre se ve
+igual. En ventas la franja codifica el canal; en personas, su color de avatar.
+
+De ahí se derivan las piezas:
+
+| Pieza | Para qué |
+|---|---|
+| `Clave` | Folios y claves en monoespaciado: `#001`, `V-0007`. Es el detalle que más hace por que la app se lea como un sistema de inventario. |
+| `Importe` | Precios en el peso más alto de la tipografía con tracking negativo, para que dominen el renglón sin agrandarlos. |
+| `BarraNivel` | Barra de existencias, medida contra el producto de mayor stock de la lista para que las barras se comparen entre sí. |
+| `TarjetaConFranja` | Contenedor base de todas las listas. |
+| `CuadroIcono` | El sustituto del círculo cuando lo que se representa es una cosa. |
+| `Rotulo` | Encabezados en mayúsculas con tracking amplio. |
+
+La tipografía también carga parte del trabajo: títulos con peso alto y tracking
+**negativo**, etiquetas pequeñas con tracking **amplio**. Ese contraste es lo que
+hace que una pantalla se vea compuesta y no solo rellenada.
+
+Un detalle de implementación que vale la pena conocer: la franja se pinta con
+`drawBehind`, no con un `Box` de altura intrínseca. `IntrinsicSize.Min` obliga a
+que todos los hijos soporten medición intrínseca, y basta uno que no la soporte
+para tumbar la lista en ejecución. `drawBehind` usa el tamaño ya medido y
+funciona con cualquier contenido.
 
 ## Decisiones técnicas
 

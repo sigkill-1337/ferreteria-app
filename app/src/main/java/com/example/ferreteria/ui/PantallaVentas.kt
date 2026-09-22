@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.PointOfSale
-import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material.icons.filled.RemoveCircleOutline
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ShoppingCartCheckout
@@ -65,6 +64,9 @@ import java.math.BigDecimal
 
 /** Los mismos valores que acepta la columna VENTA.canal en la base de datos. */
 private val CANALES = listOf("APP", "WEB", "MOSTRADOR")
+
+/** "V-0007" — folio de venta con ceros a la izquierda. */
+fun folioDe(idVenta: Int): String = "V-" + idVenta.toString().padStart(4, '0')
 
 /**
  * Ventas: historial, ticket de una venta, alta de venta nueva, edición y
@@ -114,20 +116,18 @@ fun PantallaVentas(
             },
         ) { venta ->
             TarjetaRegistro(
-                titulo = "Venta #${venta.id_venta}",
-                subtitulo = nombreCompleto(venta.nombre_cliente, venta.ap_paterno_cliente),
+                // El folio va como clave monoespaciada, no como título: lo que
+                // importa leer primero es quién compró y cuánto.
+                titulo = nombreCompleto(venta.nombre_cliente, venta.ap_paterno_cliente),
+                acento = colorDeCanal(venta.canal),
+                clave = folioDe(venta.id_venta) + "  ·  " + venta.fecha.fechaLegible(),
                 etiquetas = listOf(
-                    DatosEtiqueta(venta.fecha.fechaLegible(), Tono.NEUTRO, Icons.Default.CalendarMonth),
                     etiquetaCanal(venta.canal),
                     DatosEtiqueta(
                         conteo(venta.num_productos, "producto", "productos"),
-                        Tono.ACENTO,
+                        Tono.NEUTRO,
                         Icons.Default.ShoppingBag,
                     ),
-                ),
-                avatar = DatosAvatar(
-                    icono = Icons.AutoMirrored.Filled.ReceiptLong,
-                    tono = Tono.PRIMARIO,
                 ),
                 valor = venta.total.comoPesos(),
                 valorSecundario = "atendió ${venta.nombre_empleado}",
@@ -195,7 +195,7 @@ fun PantallaVentas(
 
     porCancelar?.let { idVenta ->
         DialogoConfirmar(
-            titulo = "¿Cancelar venta #$idVenta?",
+            titulo = "¿Cancelar la venta ${folioDe(idVenta)}?",
             mensaje = "Se borra la venta y su detalle, y el stock de esos productos " +
                 "regresa al inventario. No se puede deshacer.",
             textoConfirmar = "Cancelar venta",
@@ -229,7 +229,7 @@ private fun DialogoTicket(
                 containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     TopAppBar(
-                        title = { Text("Venta #${venta.id_venta}") },
+                        title = { Text(folioDe(venta.id_venta), style = MaterialTheme.typography.titleLarge) },
                         navigationIcon = {
                             IconButton(onClick = alCerrar) {
                                 Icon(Icons.Default.Close, contentDescription = "Cerrar")
@@ -463,7 +463,7 @@ private fun FormularioVenta(
     val completo = cliente != null && empleado != null && carrito.isNotEmpty() && !sinStock
 
     DialogoFormulario(
-        titulo = if (venta == null) "Nueva venta" else "Editar venta #${venta.id_venta}",
+        titulo = if (venta == null) "Nueva venta" else "Editar ${folioDe(venta.id_venta)}",
         guardando = guardando,
         puedeGuardar = completo,
         error = error,

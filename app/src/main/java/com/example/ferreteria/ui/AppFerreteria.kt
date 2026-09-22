@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ferreteria.data.ApiClient
+import com.example.ferreteria.ui.theme.TemaFerreteria
 
 /** Pestañas de la barra inferior. */
 private enum class Pestana(val etiqueta: String, val icono: ImageVector) {
@@ -269,21 +270,24 @@ private fun MenuMas(
         TarjetaRegistro(
             titulo = "Empleados",
             subtitulo = "Quién puede aparecer como vendedor en una venta",
-            avatar = DatosAvatar(icono = Icons.Default.Groups, tono = Tono.EXITO),
+            icono = Icons.Default.Groups,
+            acento = TemaFerreteria.acentoDe(1),
             etiquetas = listOf(DatosEtiqueta(conteo(empleados, "registro", "registros"))),
             alTocar = { alElegir(SubPantalla.EMPLEADOS) },
         )
         TarjetaRegistro(
             titulo = "Categorías",
             subtitulo = "Clasificación de los productos",
-            avatar = DatosAvatar(icono = Icons.Default.Category, tono = Tono.ACENTO),
+            icono = Icons.Default.Category,
+            acento = TemaFerreteria.acentoDe(2),
             etiquetas = listOf(DatosEtiqueta(conteo(categorias, "registro", "registros"))),
             alTocar = { alElegir(SubPantalla.CATEGORIAS) },
         )
         TarjetaRegistro(
             titulo = "Proveedores",
             subtitulo = "Quién surte cada producto",
-            avatar = DatosAvatar(icono = Icons.Default.LocalShipping, tono = Tono.ALERTA),
+            icono = Icons.Default.LocalShipping,
+            acento = TemaFerreteria.acentoDe(3),
             etiquetas = listOf(DatosEtiqueta(conteo(proveedores, "registro", "registros"))),
             alTocar = { alElegir(SubPantalla.PROVEEDORES) },
         )

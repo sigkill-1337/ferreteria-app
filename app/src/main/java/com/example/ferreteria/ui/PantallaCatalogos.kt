@@ -29,6 +29,7 @@ import com.example.ferreteria.data.Categoria
 import com.example.ferreteria.data.CategoriaRequest
 import com.example.ferreteria.data.Proveedor
 import com.example.ferreteria.data.ProveedorRequest
+import com.example.ferreteria.ui.theme.TemaFerreteria
 
 /** Catálogos de apoyo: sin ellos no se puede dar de alta un producto. */
 
@@ -57,12 +58,12 @@ fun PantallaCategorias(
         ) { categoria ->
             TarjetaRegistro(
                 titulo = categoria.nombre_categoria,
+                // Una categoría es una cosa, no una persona: cuadro con icono.
+                acento = TemaFerreteria.acentoDe(categoria.id_categoria),
+                clave = claveDe(categoria.id_categoria),
                 subtitulo = categoria.descripcion?.takeIf { it.isNotBlank() }
                     ?: "Sin descripción",
-                avatar = DatosAvatar(
-                    icono = Icons.Default.Category,
-                    tono = Tono.ACENTO,
-                ),
+                icono = Icons.Default.Category,
                 alEditar = { editando = categoria },
                 alBorrar = { porBorrar = categoria },
             )
@@ -156,15 +157,13 @@ fun PantallaProveedores(
         ) { proveedor ->
             TarjetaRegistro(
                 titulo = proveedor.nombre_empresa,
+                acento = TemaFerreteria.acentoDe(proveedor.id_proveedor),
+                clave = proveedor.rfc,
                 lineas = listOf(proveedor.email_proveedor),
                 etiquetas = listOf(
-                    DatosEtiqueta(proveedor.rfc, Tono.PRIMARIO, Icons.Default.Tag),
                     DatosEtiqueta(proveedor.telefono_proveedor, Tono.NEUTRO, Icons.Default.PhoneAndroid),
                 ),
-                avatar = DatosAvatar(
-                    icono = Icons.Default.LocalShipping,
-                    tono = Tono.ALERTA,
-                ),
+                icono = Icons.Default.LocalShipping,
                 alEditar = { editando = proveedor },
                 alBorrar = { porBorrar = proveedor },
             )
