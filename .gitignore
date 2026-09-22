@@ -1,0 +1,16 @@
+# Compilacion
+.gradle/
+build/
+/captures
+.externalNativeBuild
+.cxx
+*.iml
+
+# IDE
+/.idea
+.DS_Store
+
+# NOTA: local.properties NO se ignora en este repo.
+# El repositorio es privado y la API key del servidor se versiona a proposito
+# para que el proyecto compile al clonarlo. Si este repo se vuelve publico,
+# hay que rotar la key en el servidor de inmediato.
