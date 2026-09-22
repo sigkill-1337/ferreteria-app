@@ -68,7 +68,7 @@ fun AppFerreteria() {
     if (ApiClient.faltaApiKey) {
         EstadoVacio(
             icono = Icons.Default.VpnKeyOff,
-            titulo = "Falta la API key",
+            titulo = "Falta configurar la aplicación",
             detalle = "Agrega FERRETERIA_API_KEY=<tu key> en local.properties " +
                 "y vuelve a compilar la app.",
             tonoError = true,
@@ -128,8 +128,8 @@ fun AppFerreteria() {
             Pestana.PRODUCTOS -> conteo(productos.items.size, "producto", "productos")
             Pestana.VENTAS -> conteo(ventas.ventas.size, "venta", "ventas")
             Pestana.CLIENTES -> conteo(clientes.items.size, "cliente", "clientes")
-            Pestana.REPORTES -> "Procedimientos y consultas de la base"
-            Pestana.MAS -> "Catálogos de apoyo"
+            Pestana.REPORTES -> "Resumen del negocio"
+            Pestana.MAS -> "Personal y catálogos"
         }
     }
 
@@ -269,7 +269,7 @@ private fun MenuMas(
     ) {
         TarjetaRegistro(
             titulo = "Empleados",
-            subtitulo = "Quién puede aparecer como vendedor en una venta",
+            subtitulo = "Personal de la tienda",
             icono = Icons.Default.Groups,
             acento = TemaFerreteria.acentoDe(1),
             etiquetas = listOf(DatosEtiqueta(conteo(empleados, "registro", "registros"))),
@@ -277,7 +277,7 @@ private fun MenuMas(
         )
         TarjetaRegistro(
             titulo = "Categorías",
-            subtitulo = "Clasificación de los productos",
+            subtitulo = "Tipos de producto",
             icono = Icons.Default.Category,
             acento = TemaFerreteria.acentoDe(2),
             etiquetas = listOf(DatosEtiqueta(conteo(categorias, "registro", "registros"))),
@@ -285,7 +285,7 @@ private fun MenuMas(
         )
         TarjetaRegistro(
             titulo = "Proveedores",
-            subtitulo = "Quién surte cada producto",
+            subtitulo = "Quién surte el inventario",
             icono = Icons.Default.LocalShipping,
             acento = TemaFerreteria.acentoDe(3),
             etiquetas = listOf(DatosEtiqueta(conteo(proveedores, "registro", "registros"))),

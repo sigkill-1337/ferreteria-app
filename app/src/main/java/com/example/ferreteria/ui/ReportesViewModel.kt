@@ -20,14 +20,20 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-/** Cada reporte corresponde a una estructura de SQL del proyecto. */
-enum class TipoReporte(val etiqueta: String, val origen: String) {
-    VENTAS_DIA("Ventas del día", "Procedimiento sp_ventas_del_dia"),
-    CLIENTES_TRIMESTRE("Clientes vigentes", "Procedimiento sp_clientes_vigentes_trimestre"),
-    TOP_PRODUCTOS("Más vendidos", "GROUP BY sobre DETALLE_VENTA"),
-    CANALES("Por canal", "GROUP BY sobre VENTA.canal"),
-    DIRECTORIO("Directorio", "UNION de CLIENTE y EMPLEADO"),
-    SEGUIMIENTO("Seguimiento", "Trigger trg_venta_seguimiento"),
+/**
+ * Reportes disponibles.
+ *
+ * Cada uno se resuelve en la base de datos con un procedimiento almacenado o una
+ * consulta agrupada, pero eso no se anuncia en pantalla: a quien atiende el
+ * mostrador no le dice nada. El detalle técnico está en el README.
+ */
+enum class TipoReporte(val etiqueta: String, val descripcion: String) {
+    VENTAS_DIA("Ventas del día", "Lo vendido en una fecha"),
+    CLIENTES_TRIMESTRE("Clientes activos", "Quién compró en el trimestre"),
+    TOP_PRODUCTOS("Más vendidos", "Los productos con más salida"),
+    CANALES("Por canal", "De dónde vienen las ventas"),
+    DIRECTORIO("Directorio", "Clientes y personal juntos"),
+    SEGUIMIENTO("Seguimiento", "Compras por atender"),
 }
 
 data class EstadoReportes(

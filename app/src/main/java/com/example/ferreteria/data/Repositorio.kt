@@ -105,9 +105,9 @@ object Repositorio {
                     Resultado.Error(respuesta.code(), mensajeDeError(respuesta))
                 }
             } catch (e: IOException) {
-                Resultado.Error(null, "Sin conexión con el servidor. Revisa tu red.")
+                Resultado.Error(null, "Sin conexión. Revisa tu internet e intenta de nuevo.")
             } catch (e: Exception) {
-                Resultado.Error(null, e.message ?: "Error inesperado al hablar con la API.")
+                Resultado.Error(null, "Ocurrió un problema inesperado. Vuelve a intentarlo.")
             }
         }
 
@@ -133,12 +133,12 @@ object Repositorio {
         if (!delServidor.isNullOrBlank()) return delServidor
 
         return when (respuesta.code()) {
-            401 -> "API key inválida. Revisa FERRETERIA_API_KEY en local.properties."
-            404 -> "El registro ya no existe en el servidor."
-            405 -> "Método no permitido por la API."
-            409 -> "Ese registro choca con otro: valor duplicado o tiene datos que dependen de él."
-            500 -> "Error interno del servidor."
-            else -> "Error ${respuesta.code()} al hablar con la API."
+            401 -> "La aplicación no pudo identificarse. Avisa a soporte."
+            404 -> "Ese registro ya no existe."
+            405 -> "Esa operación no está disponible."
+            409 -> "Ese dato ya está registrado, o hay información que depende de él."
+            500 -> "Hubo un problema al procesar la solicitud. Intenta de nuevo."
+            else -> "No se pudo completar la operación. Intenta de nuevo."
         }
     }
 }

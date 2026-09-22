@@ -173,7 +173,7 @@ fun PantallaProductos(
         DialogoConfirmar(
             titulo = "¿Eliminar producto?",
             mensaje = "Se va a borrar \"${producto.nombre_producto}\". " +
-                "Si ya aparece en alguna venta, el servidor no lo va a permitir.",
+                "No se podrá eliminar si ya aparece en alguna venta.",
             alConfirmar = {
                 vm.eliminar(producto.id_producto)
                 porBorrar = null

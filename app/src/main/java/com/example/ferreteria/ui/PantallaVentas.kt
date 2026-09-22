@@ -506,8 +506,8 @@ private fun FormularioVenta(
             icono = Icons.Default.PointOfSale,
         )
         Text(
-            "Las ventas por app o sitio web entran a la bitácora de seguimiento; " +
-                "las de mostrador no.",
+            "Las compras por app o sitio web quedan en seguimiento para " +
+                "contactar al cliente después.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -587,7 +587,7 @@ private fun FormularioVenta(
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    "El servidor recalcula precios y total al guardar; este monto es referencia.",
+                    "El total se confirma al guardar la venta.",
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

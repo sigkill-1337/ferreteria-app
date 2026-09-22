@@ -140,7 +140,7 @@ fun PantallaClientes(
         DialogoConfirmar(
             titulo = "¿Eliminar cliente?",
             mensaje = "Se va a borrar a ${cliente.nombre_cliente} ${cliente.ap_paterno_cliente}. " +
-                "Si tiene ventas registradas, el servidor no lo va a permitir.",
+                "No se podrá eliminar si tiene ventas registradas.",
             alConfirmar = {
                 vm.eliminar(cliente.id_cliente)
                 porBorrar = null
@@ -199,7 +199,7 @@ private fun FormularioCliente(
             { telefono = it },
             tipo = KeyboardType.Phone,
             icono = Icons.Default.PhoneAndroid,
-            apoyo = "Entre 7 y 15 caracteres",
+            apoyo = "Ej. 8999602293",
         )
         CampoFormulario(
             "Correo",
@@ -207,7 +207,6 @@ private fun FormularioCliente(
             { email = it },
             tipo = KeyboardType.Email,
             icono = Icons.Default.AlternateEmail,
-            apoyo = "La API lo exige único: dos clientes no pueden compartirlo",
             ultimo = true,
         )
     }

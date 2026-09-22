@@ -122,7 +122,7 @@ fun PantallaCategorias(
         DialogoConfirmar(
             titulo = "¿Eliminar categoría?",
             mensaje = "Se va a borrar \"${categoria.nombre_categoria}\". " +
-                "Si tiene productos asignados, el servidor no lo va a permitir.",
+                "No se podrá eliminar si tiene productos asignados.",
             alConfirmar = {
                 vm.eliminar(categoria.id_categoria)
                 porBorrar = null
@@ -223,7 +223,7 @@ fun PantallaProveedores(
                 rfc,
                 { rfc = it },
                 icono = Icons.Default.Tag,
-                apoyo = "12 o 13 caracteres alfanuméricos, único por proveedor",
+                apoyo = "12 o 13 caracteres",
             )
 
             TituloSeccion("Contacto")
@@ -249,7 +249,7 @@ fun PantallaProveedores(
         DialogoConfirmar(
             titulo = "¿Eliminar proveedor?",
             mensaje = "Se va a borrar \"${proveedor.nombre_empresa}\". " +
-                "Si surte algún producto, el servidor no lo va a permitir.",
+                "No se podrá eliminar si surte algún producto.",
             alConfirmar = {
                 vm.eliminar(proveedor.id_proveedor)
                 porBorrar = null

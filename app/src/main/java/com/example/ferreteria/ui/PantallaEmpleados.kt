@@ -144,7 +144,7 @@ fun PantallaEmpleados(
         DialogoConfirmar(
             titulo = "¿Eliminar empleado?",
             mensaje = "Se va a borrar a ${empleado.nombre_empleado} ${empleado.ap_paterno_empleado}. " +
-                "Si tiene ventas a su nombre, el servidor no lo va a permitir.",
+                "No se podrá eliminar si tiene ventas a su nombre.",
             alConfirmar = {
                 vm.eliminar(empleado.id_empleado)
                 porBorrar = null

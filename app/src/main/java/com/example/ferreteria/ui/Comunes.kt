@@ -605,7 +605,7 @@ fun <T> ContenidoLista(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 CircularProgressIndicator(strokeWidth = 3.dp)
                 Spacer(Modifier.height(16.dp))
-                Rotulo("Consultando el servidor", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Rotulo("Cargando", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
 

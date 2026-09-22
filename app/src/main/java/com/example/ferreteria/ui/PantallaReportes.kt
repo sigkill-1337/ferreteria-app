@@ -85,9 +85,9 @@ fun PantallaReportes(
         }
 
         Text(
-            estado.tipo.origen,
+            estado.tipo.descripcion,
             modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
@@ -214,8 +214,8 @@ private fun ListaReporte(estado: EstadoReportes) {
                 if (estado.seguimiento.isEmpty()) {
                     item {
                         MensajeSinDatos(
-                            "La bitácora está vacía. Se llena sola cuando entra una venta " +
-                                "por canal APP o WEB."
+                            "Aquí aparecen los clientes que compran desde la app o el " +
+                                "sitio web, para darles seguimiento."
                         )
                     }
                 } else {
