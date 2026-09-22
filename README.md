@@ -2,17 +2,27 @@
 
 App de punto de venta e inventario en **Kotlin + Jetpack Compose**. Consume la
 API REST del repo [`ferreteria-api`](https://github.com/sigkill-1337/ferreteria-api)
-(PHP + PDO sobre MariaDB) y cubre CRUD completo sobre las 8 tablas del esquema,
-más una sección de reportes que ejecuta los procedimientos almacenados y las
-consultas agrupadas de la base de datos.
+(PHP + PDO sobre MariaDB). Cubre CRUD completo sobre seis entidades —productos,
+clientes, empleados, categorías, proveedores y ventas—, más una sección de
+reportes que ejecuta los procedimientos almacenados y las consultas agrupadas de
+la base de datos. De las ocho tablas del esquema, `DETALLE_VENTA` se administra
+a través de las ventas y `SEGUIMIENTO_CLIENTE` es de solo lectura: la llena un
+trigger.
 
 > ⚠️ **Repo privado a propósito.** `local.properties` **sí** está versionado aquí
-> e incluye la API key del servidor. Si este repositorio se vuelve público en
-> algún momento, esa key queda expuesta y hay que rotarla en el servidor de
-> inmediato. Ya pasó una vez con `ferreteria-api-docs`, que decía ser privado y
-> no lo era.
+> e incluye la API key del servidor, para que el proyecto compile al clonarlo. Si
+> este repositorio se vuelve público en algún momento, esa key queda expuesta y
+> hay que rotarla en el servidor.
 
 ---
+
+Repos del proyecto:
+
+| Repo | Contiene |
+|---|---|
+| `ferreteria-app` | Este: la app Android |
+| `ferreteria-api` | Backend PHP y scripts SQL |
+| `ferreteria-api-docs` | Documentación de integración y modelo de datos |
 
 ## Índice
 
