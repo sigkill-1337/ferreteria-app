@@ -22,9 +22,10 @@ consultas agrupadas de la base de datos.
 4. [Archivos clave](#archivos-clave)
 5. [Pantallas](#pantallas)
 6. [Lenguaje visual](#lenguaje-visual)
-7. [Decisiones técnicas](#decisiones-técnicas)
-8. [Dependencias](#dependencias)
-9. [Estado](#estado)
+7. [Icono](#icono)
+8. [Decisiones técnicas](#decisiones-técnicas)
+9. [Dependencias](#dependencias)
+10. [Estado](#estado)
 
 ---
 
@@ -243,6 +244,38 @@ Un detalle de implementación que vale la pena conocer: la franja se pinta con
 que todos los hijos soporten medición intrínseca, y basta uno que no la soporte
 para tumbar la lista en ejecución. `drawBehind` usa el tamaño ya medido y
 funciona con cualquier contenido.
+
+## Icono
+
+Una llave de tuercas en azul `#58A6FF` sobre un degradado del gris oscuro del
+tema. Se genera con `tools/generar_icono.py`; el detalle está en
+[`tools/README.md`](tools/README.md).
+
+El icono tiene que existir en dos formatos a la vez, y esa es la razón por la
+que el robot de Android suele reaparecer aunque uno crea haberlo cambiado:
+
+| Formato | Archivos | Quién lo usa |
+|---|---|---|
+| Vectorial (icono adaptativo) | `drawable/ic_launcher_{background,foreground,monochrome}.xml` | Android 8.0+ |
+| Mapa de bits | `mipmap-{m,h,x,xx,xxx}dpi/ic_launcher{,_round}.webp` | Android 7.x |
+
+Con `minSdk = 24` hacen falta los dos. Si solo se cambian los vectores, el robot
+sigue saliendo en Android 7.
+
+**Medidas del icono adaptativo:** lienzo de 108 × 108 dp, de los que solo se ven
+los 72 × 72 dp centrales —el sistema recorta 18 dp por lado— y la zona segura
+real es un círculo de 66 dp de diámetro. Ese margen no es capricho: cada
+lanzador aplica su propia máscara (círculo, cuadrado redondeado, squircle) y el
+sobrante se usa para el efecto de paralaje. El generador comprueba con un
+`assert` que nada del dibujo pase de radio 33.
+
+**Medidas de los mapas de bits:** 48, 72, 96, 144 y 192 px de lado, uno por
+densidad. Formato WebP sin pérdida, que es lo que usa Android Studio.
+
+**La capa monocroma** va aparte, en blanco plano, porque es la que tiñe el
+sistema para los iconos temáticos de Android 13+. Apuntarla al mismo dibujo a
+color —como venía en la plantilla— hace que el icono temático salga como una
+mancha.
 
 ## Decisiones técnicas
 
