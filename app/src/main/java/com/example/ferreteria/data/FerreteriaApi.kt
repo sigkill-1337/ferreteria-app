@@ -147,6 +147,7 @@ interface FerreteriaApi {
     suspend fun getClientesDelTrimestre(
         @Query("tipo") tipo: String,
         @Query("anio") anio: Int,
+        @Query("trimestre") trimestre: Int,
     ): Response<ReporteClientesTrimestre>
 
     /** GROUP BY sobre el detalle de ventas. */

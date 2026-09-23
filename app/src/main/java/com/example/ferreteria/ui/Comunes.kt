@@ -968,6 +968,75 @@ fun SelectorAnio(
     }
 }
 
+/**
+ * Selector de trimestre: cuatro opciones excluyentes.
+ *
+ * Con solo cuatro valores posibles, botones visibles resultan mejores que un
+ * desplegable: se ve de un vistazo cuál está activo y cambiar de uno a otro
+ * toma un toque en vez de dos.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SelectorTrimestre(
+    etiqueta: String,
+    trimestre: Int,
+    alCambiar: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Rotulo(etiqueta, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(6.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            (1..4).forEach { n ->
+                val activo = n == trimestre
+                Surface(
+                    onClick = { alCambiar(n) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    color = if (activo) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerHigh
+                    },
+                    contentColor = if (activo) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    border = BorderStroke(
+                        1.dp,
+                        if (activo) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.outlineVariant
+                        },
+                    ),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            "T$n",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = if (activo) FontWeight.Bold else FontWeight.Normal,
+                        )
+                        Text(mesesDelTrimestre(n), style = MaterialTheme.typography.labelSmall)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun mesesDelTrimestre(n: Int): String = when (n) {
+    1 -> "ene-mar"
+    2 -> "abr-jun"
+    3 -> "jul-sep"
+    else -> "oct-dic"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DialogoFormulario(

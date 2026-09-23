@@ -208,6 +208,7 @@ data class VentaDelDia(
 /** Salida de sp_clientes_vigentes_trimestre. */
 data class ReporteClientesTrimestre(
     val anio: Int,
+    val trimestre: Int,
     val periodo: String,
     val clientes: List<ClienteVigente>,
 )

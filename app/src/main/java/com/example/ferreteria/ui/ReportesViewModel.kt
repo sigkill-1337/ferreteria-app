@@ -42,8 +42,10 @@ data class EstadoReportes(
     val error: String? = null,
     val fecha: String = hoyEnTexto(),
     val anio: Int = anioActual(),
+    /** 1 a 4. El proyecto pide el primero, que es el valor por omisión. */
+    val trimestre: Int = 1,
     val ventasDia: ReporteVentasDia? = null,
-    val trimestre: ReporteClientesTrimestre? = null,
+    val reporteTrimestre: ReporteClientesTrimestre? = null,
     val topProductos: List<ProductoTop> = emptyList(),
     val canales: List<VentasPorCanal> = emptyList(),
     val directorio: List<PersonaDirectorio> = emptyList(),
@@ -87,6 +89,12 @@ class ReportesViewModel : ViewModel() {
         cargar()
     }
 
+    fun cambiarTrimestre(trimestre: Int) {
+        if (trimestre == _estado.value.trimestre) return
+        _estado.update { it.copy(trimestre = trimestre) }
+        cargar()
+    }
+
     fun cargar() {
         val actual = _estado.value
         _estado.update { it.copy(cargando = true, error = null) }
@@ -98,8 +106,8 @@ class ReportesViewModel : ViewModel() {
                 }
 
                 TipoReporte.CLIENTES_TRIMESTRE ->
-                    resolver(Repositorio.clientesDelTrimestre(actual.anio)) { dato ->
-                        _estado.update { it.copy(trimestre = dato) }
+                    resolver(Repositorio.clientesDelTrimestre(actual.anio, actual.trimestre)) { dato ->
+                        _estado.update { it.copy(reporteTrimestre = dato) }
                     }
 
                 TipoReporte.TOP_PRODUCTOS -> resolver(Repositorio.topProductos()) { dato ->

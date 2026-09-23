@@ -98,12 +98,21 @@ fun PantallaReportes(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             )
 
-            TipoReporte.CLIENTES_TRIMESTRE -> SelectorAnio(
-                etiqueta = "Año · del 1 de enero al 31 de marzo",
-                anio = estado.anio,
-                alCambiar = vm::cambiarAnio,
+            TipoReporte.CLIENTES_TRIMESTRE -> Column(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            )
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                SelectorTrimestre(
+                    etiqueta = "Trimestre",
+                    trimestre = estado.trimestre,
+                    alCambiar = vm::cambiarTrimestre,
+                )
+                SelectorAnio(
+                    etiqueta = "Año",
+                    anio = estado.anio,
+                    alCambiar = vm::cambiarAnio,
+                )
+            }
 
             else -> Spacer(Modifier.height(8.dp))
         }
@@ -136,7 +145,7 @@ fun PantallaReportes(
 /** true cuando el reporte activo todavía no tiene nada que dibujar. */
 private fun estaVacio(estado: EstadoReportes): Boolean = when (estado.tipo) {
     TipoReporte.VENTAS_DIA -> estado.ventasDia == null
-    TipoReporte.CLIENTES_TRIMESTRE -> estado.trimestre == null
+    TipoReporte.CLIENTES_TRIMESTRE -> estado.reporteTrimestre == null
     TipoReporte.TOP_PRODUCTOS -> estado.topProductos.isEmpty()
     TipoReporte.CANALES -> estado.canales.isEmpty()
     TipoReporte.DIRECTORIO -> estado.directorio.isEmpty()
@@ -173,7 +182,7 @@ private fun ListaReporte(estado: EstadoReportes) {
             }
 
             TipoReporte.CLIENTES_TRIMESTRE -> {
-                val reporte = estado.trimestre ?: return@LazyColumn
+                val reporte = estado.reporteTrimestre ?: return@LazyColumn
 
                 item {
                     TarjetaResumen(

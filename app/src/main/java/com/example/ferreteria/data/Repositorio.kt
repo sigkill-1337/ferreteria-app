@@ -76,8 +76,8 @@ object Repositorio {
     // ---------- Reportes ----------
 
     suspend fun ventasDelDia(fecha: String) = llamar { api.getVentasDelDia("ventas-dia", fecha) }
-    suspend fun clientesDelTrimestre(anio: Int) =
-        llamar { api.getClientesDelTrimestre("clientes-trimestre", anio) }
+    suspend fun clientesDelTrimestre(anio: Int, trimestre: Int) =
+        llamar { api.getClientesDelTrimestre("clientes-trimestre", anio, trimestre) }
 
     suspend fun topProductos() = llamar { api.getTopProductos("top-productos") }
     suspend fun directorio() = llamar { api.getDirectorio("directorio") }
