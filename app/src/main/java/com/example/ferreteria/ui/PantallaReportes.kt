@@ -42,7 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.ferreteria.data.ClienteVigente
 import com.example.ferreteria.data.PersonaDirectorio
@@ -92,24 +91,18 @@ fun PantallaReportes(
         )
 
         when (estado.tipo) {
-            TipoReporte.VENTAS_DIA -> CampoFormulario(
-                etiqueta = "Fecha (AAAA-MM-DD)",
-                valor = estado.fecha,
+            TipoReporte.VENTAS_DIA -> SelectorFecha(
+                etiqueta = "Fecha",
+                fecha = estado.fecha,
                 alCambiar = vm::cambiarFecha,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                tipo = KeyboardType.Number,
-                icono = Icons.Default.CalendarMonth,
-                apoyo = if (esFechaValida(estado.fecha)) null else "Formato: 2026-08-10",
             )
 
-            TipoReporte.CLIENTES_TRIMESTRE -> CampoFormulario(
-                etiqueta = "Año",
-                valor = estado.anio.toString(),
+            TipoReporte.CLIENTES_TRIMESTRE -> SelectorAnio(
+                etiqueta = "Año · del 1 de enero al 31 de marzo",
+                anio = estado.anio,
                 alCambiar = vm::cambiarAnio,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                tipo = KeyboardType.Number,
-                icono = Icons.Default.CalendarMonth,
-                apoyo = "Del 1 de enero al 31 de marzo",
             )
 
             else -> Spacer(Modifier.height(8.dp))

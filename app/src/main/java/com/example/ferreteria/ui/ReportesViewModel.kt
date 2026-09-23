@@ -74,16 +74,17 @@ class ReportesViewModel : ViewModel() {
         cargar()
     }
 
-    /** La fecha se recarga sola en cuanto queda bien escrita (AAAA-MM-DD). */
+    /** La fecha llega del calendario, así que siempre viene bien formada. */
     fun cambiarFecha(fecha: String) {
+        if (fecha == _estado.value.fecha) return
         _estado.update { it.copy(fecha = fecha) }
-        if (esFechaValida(fecha)) cargar()
+        cargar()
     }
 
-    fun cambiarAnio(texto: String) {
-        val anio = texto.toIntOrNull() ?: return
+    fun cambiarAnio(anio: Int) {
+        if (anio == _estado.value.anio) return
         _estado.update { it.copy(anio = anio) }
-        if (anio in 2000..2100) cargar()
+        cargar()
     }
 
     fun cargar() {
@@ -135,9 +136,6 @@ class ReportesViewModel : ViewModel() {
 
     fun limpiarError() = _estado.update { it.copy(error = null) }
 }
-
-fun esFechaValida(texto: String): Boolean =
-    Regex("""^\d{4}-\d{2}-\d{2}$""").matches(texto.trim())
 
 private fun hoyEnTexto(): String =
     SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())

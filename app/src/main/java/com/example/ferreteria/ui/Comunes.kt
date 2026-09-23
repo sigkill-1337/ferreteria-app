@@ -27,12 +27,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.RemoveCircleOutline
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material3.AlertDialog
@@ -40,7 +43,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -50,6 +57,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -81,6 +89,10 @@ import com.example.ferreteria.ui.theme.EstiloImporte
 import com.example.ferreteria.ui.theme.EstiloImporteGrande
 import com.example.ferreteria.ui.theme.EstiloRotulo
 import com.example.ferreteria.ui.theme.TemaFerreteria
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * Lenguaje visual de la app.
@@ -806,6 +818,150 @@ fun <T> SelectorOpcion(
                             abierto = false
                         },
                     )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Selector de fecha con calendario.
+ *
+ * Antes era un campo de texto con teclado numérico, y resultaba imposible de
+ * usar: el teclado numérico de Android no incluye el guion, así que una vez
+ * borrada la fecha no había forma de volver a escribirla en formato
+ * AAAA-MM-DD. Con el calendario no hay nada que teclear ni formato que acertar.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SelectorFecha(
+    etiqueta: String,
+    fecha: String,
+    alCambiar: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var abierto by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        Rotulo(etiqueta, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(6.dp))
+
+        Surface(
+            onClick = { abierto = true },
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 13.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    fecha,
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Text(
+                    "Cambiar",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+    }
+
+    if (abierto) {
+        // El calendario trabaja en UTC. Se convierte en ambos sentidos con esa
+        // misma zona para que la fecha no se corra un día según el huso horario.
+        val estadoCalendario = rememberDatePickerState(
+            initialSelectedDateMillis = fechaAMillis(fecha),
+        )
+
+        DatePickerDialog(
+            onDismissRequest = { abierto = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    estadoCalendario.selectedDateMillis?.let { alCambiar(millisAFecha(it)) }
+                    abierto = false
+                }) { Text("Aceptar") }
+            },
+            dismissButton = {
+                TextButton(onClick = { abierto = false }) { Text("Cancelar") }
+            },
+        ) {
+            DatePicker(state = estadoCalendario)
+        }
+    }
+}
+
+private fun formatoIso(): SimpleDateFormat =
+    SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
+
+private fun fechaAMillis(fecha: String): Long? =
+    try {
+        formatoIso().parse(fecha)?.time
+    } catch (e: Exception) {
+        null
+    }
+
+private fun millisAFecha(millis: Long): String = formatoIso().format(Date(millis))
+
+/**
+ * Selector de año con botones. Un campo de texto tenía el problema de que al
+ * borrarlo quedaba vacío y sin valor válido, dejándolo atascado.
+ */
+@Composable
+fun SelectorAnio(
+    etiqueta: String,
+    anio: Int,
+    alCambiar: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    minimo: Int = 2000,
+    maximo: Int = 2100,
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Rotulo(etiqueta, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(6.dp))
+
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                IconButton(
+                    onClick = { alCambiar(anio - 1) },
+                    enabled = anio > minimo,
+                ) {
+                    Icon(Icons.Default.RemoveCircleOutline, contentDescription = "Año anterior")
+                }
+
+                Text(
+                    anio.toString(),
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                )
+
+                IconButton(
+                    onClick = { alCambiar(anio + 1) },
+                    enabled = anio < maximo,
+                ) {
+                    Icon(Icons.Default.AddCircleOutline, contentDescription = "Año siguiente")
                 }
             }
         }
